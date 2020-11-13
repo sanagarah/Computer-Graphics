@@ -5,26 +5,42 @@ package MickyMouse;
 import com.jogamp.opengl.*;
 import com.jogamp.opengl.util.FPSAnimator;
 import com.jogamp.opengl.awt.GLCanvas;
+import com.jogamp.opengl.glu.GLU;
+import com.jogamp.opengl.util.gl2.GLUT;
 import javax.swing.JFrame;
 
 
-public class Circle implements GLEventListener {
+import java.awt.event.KeyListener;
+import java.awt.event.KeyEvent;
 
+import java.awt.event.MouseListener;
+import java.awt.event.MouseEvent;
+
+public class Circle implements GLEventListener , KeyListener , MouseListener {
+   GLUT glut = new GLUT();
+   GLU glu;
+   float r=1; float g=1;float b=1; float d=1;    //defult background is white (1,1,1,1)
+   float x=0;    //defult 
+ public Circle() {
+
+    }
     public static void main(String[] args) {
         // The canvas
-        final GLCanvas glcanvas = new GLCanvas();
-        Circle l = new Circle();
-        glcanvas.addGLEventListener(l);
-        glcanvas.setSize(800, 700);
 
-        //creating frame
+        final GLCanvas glcanvas = new GLCanvas();
+
+        Circle prog = new Circle();
+        glcanvas.addGLEventListener(prog);
+        glcanvas.addKeyListener(prog);
+        glcanvas.addMouseListener(prog);
+        glcanvas.setSize(800, 700);
         final JFrame frame = new JFrame("Micky Mouse");
         //adding canvas to frame
         frame.getContentPane().add(glcanvas);
         frame.setSize(frame.getContentPane().getPreferredSize());
         frame.setVisible(true);
         //animation code
-        FPSAnimator animator = new FPSAnimator(glcanvas, 600);
+        FPSAnimator animator = new FPSAnimator(glcanvas, 600,true);
         animator.start();
     }
 
@@ -42,17 +58,36 @@ public class Circle implements GLEventListener {
     public void display(GLAutoDrawable drawable) {
 
         final GL2 gl = drawable.getGL().getGL2();
-        gl.glClearColor(1, 1, 1, 1);
+               
+        glu = GLU.createGLU(gl);
+        gl.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
+        //
+        gl.glMatrixMode(GL2.GL_PROJECTION);
+        gl.glLoadIdentity();
+        gl.glFrustum(-1.0f, 1.0f, -1f, 1.0f, 1.5f, 20.0f);
+        
+        gl.glMatrixMode(GL2.GL_MODELVIEW);
+        gl.glLoadIdentity();
+        
+        //camera viewing and x for mouse affect
+        glu.gluLookAt(x, 0, 2.0, 0, 0, 0, 0.0f, 1, 0.7f);
+
+        
+         //background colour
+        gl.glClearColor(r, b, g, d);
+        gl.glFlush();
+       
+        
         int numVertices = 600;
         double radius = 0.5;
 
         // clear the window
         gl.glClear(GL2.GL_COLOR_BUFFER_BIT);
-
-       
         
+
         
         //RED half circle
+       // gl.glColor3f(r,g,b); 
         gl.glColor3f(1, 0, 0);
         gl.glPushMatrix(); 
         gl.glRotatef(180,0,0,1);
@@ -72,6 +107,7 @@ public class Circle implements GLEventListener {
         
         
         //BLACK half circle
+
         gl.glColor3f(0, 0, 0);
         gl.glBegin(GL2.GL_TRIANGLE_FAN);
         {
@@ -189,6 +225,91 @@ public class Circle implements GLEventListener {
   
     @Override
     public void reshape(GLAutoDrawable glad, int i, int i1, int i2, int i3) {
+    }
+
+    @Override
+    public void keyTyped(KeyEvent ke) {
+       char key = ke.getKeyChar();
+
+        System.out.printf("Key typed: %c\n", key);
+
+        switch (key) {
+
+            case 'r':
+                System.out.println("Changing the background Color to RED....");
+                r = 0.7f;
+                g = 0.2f;
+                b = 0.12f;
+                d = 0;
+                break;
+            case 'g':
+                System.out.println("Changing the background Color to GREEN....");
+                r = 0.2f;
+                g = 0.5f;
+                b = 0.7f;
+                d = 0;
+                break;
+            case 'b':
+                System.out.println("Changing the background Color to BLUE....");
+                r = 0.2f;
+                g = 0.8f;
+                b = 0.5f;
+                d = 0.3f;
+                break;
+             case 'p':
+                System.out.println("Changing the background Color to PINK....");
+                r = 1f;
+                g = 0.6f;
+                b = 0.5f;
+                d = 0f;
+                break;
+                
+              case 'y':
+                System.out.println("Changing the background Color to YELLOW....");
+                r = 0.9f;
+                g = 0.6f;
+                b = 1f;
+                d = 0f;
+                break;
+
+            case 27:
+                System.out.println("Exit!");
+                System.exit(0);
+        }
+    }
+
+    @Override
+    public void keyPressed(KeyEvent ke) {
+    }
+
+    @Override
+    public void keyReleased(KeyEvent ke) {
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent me) {
+ if(me.getButton()==MouseEvent.BUTTON1)
+        x+=0.1;
+         if(me.getButton()==MouseEvent.BUTTON3)
+        x-=0.1;
+         
+        
+         System.out.println("("+me.getX()+","+me.getY()+")");    }
+
+    @Override
+    public void mousePressed(MouseEvent me) {
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent me) {
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent me) {
+    }
+
+    @Override
+    public void mouseExited(MouseEvent me) {
     }
 
 }
