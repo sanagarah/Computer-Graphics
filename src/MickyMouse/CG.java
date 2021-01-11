@@ -16,7 +16,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseEvent;
 
-public class Circle implements GLEventListener , KeyListener , MouseListener {
+public class cg implements GLEventListener , KeyListener , MouseListener {
    GLUT glut = new GLUT();
    GLU glu;
    float r=1; float g=1;float b=1; float d=1;    //defult background is white (1,1,1,1)
