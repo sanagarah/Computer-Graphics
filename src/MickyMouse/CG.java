@@ -1,7 +1,4 @@
 package MickyMouse;
-
-
- 
 import com.jogamp.opengl.*;
 import com.jogamp.opengl.util.FPSAnimator;
 import com.jogamp.opengl.awt.GLCanvas;
@@ -16,12 +13,12 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseEvent;
 
-public class cg implements GLEventListener , KeyListener , MouseListener {
+public class CG implements GLEventListener , KeyListener , MouseListener {
    GLUT glut = new GLUT();
    GLU glu;
    float r=1; float g=1;float b=1; float d=1;    //defult background is white (1,1,1,1)
    float x=0;    //defult 
- public Circle() {
+ public Mickey() {
 
     }
     public static void main(String[] args) {
@@ -29,7 +26,7 @@ public class cg implements GLEventListener , KeyListener , MouseListener {
 
         final GLCanvas glcanvas = new GLCanvas();
 
-        Circle prog = new Circle();
+        Mickey prog = new Mickey();
         glcanvas.addGLEventListener(prog);
         glcanvas.addKeyListener(prog);
         glcanvas.addMouseListener(prog);
@@ -140,17 +137,7 @@ public class cg implements GLEventListener , KeyListener , MouseListener {
         gl.glColor3f(0, 0, 0);
 
         gl.glBegin(GL2.GL_TRIANGLE_FAN);
-        {
-            double angle = 0;
-            double angleIncrement = 2 * Math.PI / numVertices;
-            for (int i = 0; i < numVertices; i++) {
-                angle = i * angleIncrement;
-                double x = 0.3 * Math.cos(angle);
-                double y = 0.3 * Math.sin(angle);
-                gl.glVertex2d(x, y);
-            }
-        }
-        gl.glEnd();
+        glut.glutSolidSphere(0.3, 100, 100);//3D
         gl.glPopMatrix();
         
         //medium black circle 
@@ -169,19 +156,7 @@ public class cg implements GLEventListener , KeyListener , MouseListener {
          theta = 0;
          
         gl.glColor3f(0, 0, 0);
-
-        gl.glBegin(GL2.GL_TRIANGLE_FAN);
-        {
-            double angle = 0;
-            double angleIncrement = 2 * Math.PI / numVertices;
-            for (int i = 0; i < numVertices; i++) {
-                angle = i * angleIncrement;
-                double x = 0.3 * Math.cos(angle);
-                double y = 0.3 * Math.sin(angle);
-                gl.glVertex2d(x, y);
-            }
-        }
-        gl.glEnd();
+        glut.glutSolidSphere(0.3, 100, 100); //3D
         gl.glPopMatrix();
         
         //right small white circle 
